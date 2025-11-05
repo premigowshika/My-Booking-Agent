@@ -1,8 +1,3 @@
-Perfect 👍 — since your n8n agent’s main function is **scheduling meetings to a calendar**, here’s a **clean, ready-to-use README.md** for your GitHub repo.
-
-Just replace the placeholder link (https://premidev.app.n8n.cloud/webhook/e4cf0410-685c-4479-9b80-3cad62bdf0f7/chat)) with your **actual public agent link** from n8n.
-
----
 
 ### 🗓️ AI Meeting Scheduler Agent (n8n)
 
