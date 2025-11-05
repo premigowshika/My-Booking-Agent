@@ -1,0 +1,160 @@
+{
+  "name": "My Booking Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nI am your Booking Assistant. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5fcc2f0c-361e-4d72-a6d6-4393f0f7ee53",
+      "name": "When chat message received",
+      "webhookId": "e4cf0410-685c-4479-9b80-3cad62bdf0f7"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a helpful appointment chat assistant\nUsers come to chat with you to book appointments\n*create_event to book a calendar appointment\n*notify the user with relevant details for their appointment\n*The time is {{$now}}\n*Do not assume anything; ask questions when you are unsure"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "613f87d9-87e5-4d86-b62d-cc849a08ca32",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "f7276f3f-664d-4843-8305-a24a2a1af852",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qau9P0WLov1rfzyP",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "5aa04a8b-49e3-42c2-ba2d-ca421ba6c507",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "premigowshika2003@gmail.com",
+          "mode": "list",
+          "cachedResultName": "premigowshika2003@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        176
+      ],
+      "id": "c0668c94-355f-41bb-928c-bbf6fe865a59",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5n9NdcJ4jQlUW5iM",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d780af0d-4522-4b42-a3aa-6250799081b6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "34e29c2fa36d7a6ec78249a54d3cb293b7920ba8c649ab8dd70a86daef63c735"
+  },
+  "id": "HZkpBLDUJPiqlc1R",
+  "tags": []
+}
